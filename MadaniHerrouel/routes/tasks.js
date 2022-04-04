@@ -39,65 +39,7 @@ router.post("/tasks", (request, response) => {
     response.status(201).send(task);
 });
 
-//PUT
-router.put("/tasks/:id", (request, response) => {
-    const taskId = request.params.id;
-    const task = tasks.find(task => task.id === parseInt(taskId));
-    if(!task) return response.status(404).send("The task with the provided ID does not exist.");
 
-    const { error } = utils.validateTask(request.body);
-
-    if(error) return response.status(400).send("The name should be at least 3 chars long!")
-
-    task.name = request.body.name;
-    task.surname = request.body.surname;
-    task.gender = request.body.gender;
-    task.age = request.body.age;
-    task.address = request.body.address;
-    task.email = request.body.email;
-    task.phone = request.body.phone;
-    task.speciality = request.body.speciality;
-
-    response.send(task);
-});
-
-
-
-//PATCH
-router.patch("/tasks/:id", (request, response) => {
-    const taskId = request.params.id;
-    const task = tasks.find(task => task.id === parseInt(taskId));
-    if(!task) return response.status(404).send("The task with the provided ID does not exist.");
-
-    const { error } = utils.validateTask(request.body);
-
-    if(error) return response.status(400).send("The name should be at least 3 chars long!")
-
-    task.name = request.body.name;
-
-    if(request.body.surname) {
-        task.surname = request.body.surname;
-    }
-    if(request.body.gender) {
-        task.gender = request.body.gender;
-    }
-    if(request.body.age) {
-        task.age = request.body.age;
-    }
-    if(request.body.address) {
-        task.address = request.body.address;
-    }
-    if(request.body.email) {
-        task.email = request.body.email;
-    }
-    if(request.body.phone) {
-        task.phone = request.body.phone;
-    }
-    if(request.body.speciality) {
-        task.speciality = request.body.speciality;
-    }
-    response.send(task);
-});
 
 //DELETE
 router.delete("/tasks/:id", (request, response) => {
