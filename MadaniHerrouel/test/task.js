@@ -120,6 +120,63 @@ describe('Task APIs', () => {
 
     });
 
+/**
+     * Test the PUT route
+     */
+ describe("PUT /api/tasks/:id", () => {
+    it("It should PUT an existing task", (done) => {
+        const taskId = 1;
+        const task = {
+            name: "Madani",
+            surname: "Herrouel",
+            gender: "male",
+            age: 26,
+            address: "Cumberland Walk, Chumuckla,Michigan,Solomon Islands",
+            email: "housetucker@ultrasure.com",
+            phone: "+1 (965) 468-2857",
+            speciality: "marketing"
+        };
+        chai.request(server)
+            .put("/api/tasks/" + taskId)
+            .send(task)
+            .end((err, response) => {
+                response.should.have.status(200);
+                response.body.should.be.a('object');
+                response.body.should.have.property('id').eq(1);
+                response.body.should.have.property('name').eq("Madani");
+                response.body.should.have.property('surname').eq("Herrouel");
+                response.body.should.have.property('age').eq(26);
+                response.body.should.have.property('address').eq("Cumberland Walk, Chumuckla,Michigan,Solomon Islands");
+                response.body.should.have.property('email').eq("housetucker@ultrasure.com");
+                response.body.should.have.property('phone').eq("+1 (965) 468-2857");
+                response.body.should.have.property('speciality').eq("marketing");
+            done();
+            });
+    });
+
+    it("It should NOT PUT an existing task with a name with less than 3 characters", (done) => {
+        const taskId = 1;
+        const task = {
+            name: "Ma",
+            surname: "Herrouel",
+            gender: "male",
+            age: 26,
+            address: "Cumberland Walk, Chumuckla,Michigan,Solomon Islands",
+            email: "housetucker@ultrasure.com",
+            phone: "+1 (965) 468-2857",
+            speciality: "marketing"
+        };
+        chai.request(server)
+            .put("/api/tasks/" + taskId)
+            .send(task)
+            .end((err, response) => {
+                response.should.have.status(400);
+                response.text.should.be.eq("The name should be at least 3 chars long!");
+            done();
+            });
+    });
+});
+
 
     /**
      * Test the DELETE route
